@@ -1,0 +1,31 @@
+body {
+    height: 101%;
+    width:100%;
+}
+
+div.wrapper {
+    width:1280px;
+    height:985px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#cicero {
+    
+}
+
+div#scroll {
+    width: 1280px;
+    text-align: center;
+    position: fixed;
+    bottom: -60px;
+    color: rgba(255,255,255,.8);
+    font-size: 3em;
+    font-weight: bold;
+}
+
+div#potluck {
+    top: 0px;
+    width: 1280px;
+    position: fixed;
+}
