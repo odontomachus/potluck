@@ -10,6 +10,7 @@ setup(name='potluck',
       install_requires = [
         'bottle',
         'MySQL-python',
-        'twisted',
+        'gevent',
+        'gevent-websocket',
         ]
      )

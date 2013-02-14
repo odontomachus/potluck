@@ -1,12 +1,26 @@
 # -*- coding: utf-8 -*-
-import time
 import sys
 import json
+import random
+import md5
+import uuid
 
-from bottle import route, run, get, post, request, abort
+from bottle import route, get, post, request, abort, Bottle
+from gevent import monkey; monkey.patch_all()
+from gevent import Greenlet
+
+from gevent.pywsgi import WSGIServer
+from geventwebsocket import WebSocketHandler, WebSocketError
+from gevent.queue import Queue, Empty
 
 import ConfigParser
 import MySQLdb
+
+app = Bottle()
+
+session_id = md5.md5(str(random.random())).hexdigest()
+
+update_queue = {}
 
 def connect_db(host, port, user, password, db):
     try:
@@ -53,28 +67,32 @@ class Reservation:
         self.response = result[1]
         self.errors = {'food':('','')}
         self.has_errors = False
-
+        self.users = self.get_users()
         self.update()
 
+
+    def get_users(self):
         # Get other users.
-        sql = 'SELECT name, response, food FROM guests WHERE hash<>%s ORDER BY name'
-        self.users = {'yes':'', 'no': '', 'maybe': '', 'invited':''}
+        sql = 'SELECT name, response, food FROM guests ORDER BY name'
+        users = {'yes':'', 'no': '', 'maybe': '', 'invited':''}
         try:
-            self.cursor.execute(sql, (hash,))
+            self.cursor.execute(sql)
             results = self.cursor.fetchall()
             for name, response, food in results:
                 response = response or 'invited'
-                self.users[response] += '<li>'+name
+                users[response] += '<li>'+name
                 if response == 'yes':
-                    self.users[response] += '''
+                    users[response] += '''
                     <div class="food">
                     {food}
                     </div>
                     '''.format(food=food)
-                self.users[response] += '</li>\n'
+                users[response] += '</li>\n'
+            return users
         except MySQLdb.Error, e:
             sys.stderr.write("[ERROR] %d: %s\n" % (e.args[0], e.args[1]))
             abort(500)
+
 
     def update(self):
         self.classes = {
@@ -121,9 +139,9 @@ def getlang(lang):
     abort(404)
 
 def template(user):
-    return open('templates/potluck.html').read().format(user=user, users=user.users)
+    return open('templates/potluck.html').read().format(user=user, users=user.users, session=session_id)
 
-@get('/<lang>/rsvp/<hash>')
+@app.get('/<lang>/rsvp/<hash>')
 def rsvp(hash, lang):
     request.lang = getlang(lang)
     reservation = Reservation(hash)
@@ -131,7 +149,7 @@ def rsvp(hash, lang):
         abort(404, "Invalid path")
     return template(reservation)
 
-@post('/<lang>/rsvp/<hash>')
+@app.post('/<lang>/rsvp/<hash>')
 def save(hash, lang):
     request.lang = getlang(lang)
     reservation = Reservation(hash)
@@ -143,8 +161,40 @@ def save(hash, lang):
 
     if not reservation.has_errors:
         reservation.save()
+        users = reservation.get_users()
+        for channel in update_queue.values():
+            channel.put(json.dumps(users))
 
     return template(reservation)
 
-run(server='twisted', host='localhost', port=8116)
 
+@app.route('/updates')
+def updates():
+    wsock = request.environ.get('wsgi.websocket')
+    uid = uuid.uuid1()
+    queue = Queue()
+    if not wsock:
+        abort(400, 'Expected WebSocket request.')
+
+    try:
+        message = wsock.receive()
+        if message!='id:'+session_id:
+            wsock.close()
+            return
+        update_queue[uid] = queue
+
+    except WebSocketError:
+        return
+
+    while True:
+        try:
+            message = queue.get()
+            if message:
+                wsock.send(message)
+        except WebSocketError:
+            del update_queue[uid]
+            break
+
+server = WSGIServer(('0.0.0.0', 8116), app,
+                    handler_class=WebSocketHandler)
+server.serve_forever()

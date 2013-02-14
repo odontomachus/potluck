@@ -2,6 +2,23 @@ potluck = {
     scrolled: false,
 }
 
+var getWS = function () {
+    var ws = new WebSocket("ws://potluck.local:8116/updates");
+    ws.onopen = function() {
+	ws.send('id:'+session_id);
+    };
+    ws.onmessage = function(evt) {
+	var data = $.parseJSON(evt.data);
+	for(var sectionClass in data)
+	{
+	    $('div.attendance div.'+ sectionClass+ ' ul').html(data[sectionClass]);
+	    console.log(data[sectionClass]);
+	};
+    };
+    return ws;
+};
+
+
 $(function () {
     $('#potluck').animate({
 	top: '+=980',
@@ -9,6 +26,12 @@ $(function () {
     $('#scroll').delay(1600).animate({
 	bottom: '+=80',
     }, 1100, 'easeOutElastic');
+
+    ws = getWS();
+    ws.onclose = function() {
+	ws = getWS();
+    };
+
 });
 
 function isScrolledIntoView(elem)
@@ -80,3 +103,5 @@ $('a.location').hover(function() {
 }, function() {
     $('div.contact').hide();
 });
+
+
