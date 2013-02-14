@@ -6,7 +6,6 @@ import json
 from bottle import route, run, get, post, request, abort
 
 import ConfigParser
-
 import MySQLdb
 
 def connect_db(host, port, user, password, db):

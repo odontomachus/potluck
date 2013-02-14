@@ -102,7 +102,7 @@ div.response form#food_form button {
 div.tabs {
     float: left;
     width: 100%;
-    padding-bottom: 20px;
+    padding: 0 0 20px 0;
 }
 
 div.tabs li {
@@ -117,6 +117,21 @@ div.tabs li {
 div.tabs li:last-child {
     border-right: none;
 }
+
+div.responses {
+    margin-top: 50px;
+    float: left;
+    min-height: 50px;
+    border: grey solid 1px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+div.responses ul {
+    margin: 0;
+    padding: 0;
+}
+
 
 div.tabs li.selected {
     font-weight: bold;

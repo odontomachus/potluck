@@ -6,6 +6,7 @@ CREATE TABLE guests (
        hash char(32),
        sent tinyint(1) unsigned,
        UNIQUE INDEX (hash),
-       UNIQUE INDEX(name)
+       UNIQUE INDEX(name),
+       UNIQUE INDEX(email)
 ) CHARACTER SET = utf8 COLLATE = utf8_bin;
        
