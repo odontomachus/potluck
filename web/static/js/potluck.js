@@ -1,4 +1,3 @@
-
 potluck = {
     scrolled: false,
 }
@@ -33,11 +32,45 @@ $(window).scroll(function() {
 	$('body').animate({
 	    scrollTop: 0
 	},1600);
-	    
+	$('div.wrapper').css('height', 'auto');
+		    
 	$('#potluck').delay(100)
 	    .animate({
 		top: '0px',
 	    }, 1500)
 	    .css('position', 'relative');
     };
+});
+
+$('div.responses .tabs li').click( function() {
+    if ($(this).hasClass('selected')) return;
+
+    var cClass = $(this).attr('class').split('/\s/')[0];
+    $(this).siblings('.selected').removeClass('selected');
+    $(this).addClass('selected');
+    $('div.attendance .selected').removeClass('selected').hide();
+    $('div.attendance .' + cClass).addClass('selected').show();
+});
+
+$('div.response div.confirm a').click( function() {
+    if ($(this).hasClass('selected')) return false;
+
+    if ($(this).hasClass('yes')) {
+	$('div.food').removeClass('hidden');
+    }
+    else {
+	$('div.food').addClass('hidden');
+    };
+
+    var cClass = $(this).attr('class');
+    $('div.response .selected').removeClass('selected');
+    $(this).addClass('selected');
+    $('div.response input#response').attr('value', cClass);
+    return false;
+});
+
+$('a.location').hover(function() {
+    $('div.contact').show();
+}, function() {
+    $('div.contact').hide();
 });

@@ -11,7 +11,6 @@ div.wrapper {
 }
 
 div#cicero {
-    
 }
 
 div#scroll {
@@ -28,4 +27,104 @@ div#potluck {
     top: 0px;
     width: 1280px;
     position: fixed;
+    font-size: 1.25em;
 }
+
+div.column {
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+div.half {
+    width: 50%;
+}
+
+div.two-thirds {
+    width: 66%;
+}
+
+div.one-third {
+    width: 33%;
+}
+
+div.pane {
+    padding: 10px;
+    margin: 0;
+    float: left;
+}
+
+div.contact {
+    display: none;
+    position: absolute;
+}
+
+/**
+ * Confirmation section
+ */
+div.response {
+    height: 7em;
+}
+div.confirm {
+    height: 3em;
+    margin-bottom: 2em;
+}
+
+div.confirm > div {
+    float: left;
+}
+
+div.confirm a.selected {
+    font-weight: bold;
+}
+
+div.response div.maybe {
+    padding-top: 1em;
+}
+
+div.response div.no {
+    padding-top: 2em;
+}
+
+div.response div.food.hidden {
+    display: none;
+}
+
+div.response form#food textarea,
+div.response form#food button {
+    vertical-align:middle;
+}
+
+
+/**
+ * Attendance tab
+ */
+div.tabs {
+    float: left;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+div.tabs li {
+    list-style:none;
+    float: left;
+    padding: 5px 2px;
+    margin: 0px 5px;
+    cursor: pointer;
+}
+div.tabs li.selected {
+    font-weight: bold;
+}
+
+div.attendance > div {
+    display: none;
+}
+
+div.attendance > div.selected {
+    display: block;
+}
+
+div.attendance li {
+    list-style: none;
+}
+
