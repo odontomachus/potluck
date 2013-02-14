@@ -90,8 +90,8 @@ div.response div.food.hidden {
     display: none;
 }
 
-div.response form#food textarea,
-div.response form#food button {
+div.response form#food_form textarea,
+div.response form#food_form button {
     vertical-align:middle;
 }
 
@@ -108,12 +108,19 @@ div.tabs {
 div.tabs li {
     list-style:none;
     float: left;
-    padding: 5px 2px;
-    margin: 0px 5px;
+    padding: 5px 7px;
+    margin: 0px 0px;
     cursor: pointer;
+    border-right: solid grey 1px;
 }
+
+div.tabs li:last-child {
+    border-right: none;
+}
+
 div.tabs li.selected {
     font-weight: bold;
+    cursor: default;
 }
 
 div.attendance > div {
@@ -128,3 +135,6 @@ div.attendance li {
     list-style: none;
 }
 
+div.attendance .food {
+    display: none;
+}

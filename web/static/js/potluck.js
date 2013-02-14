@@ -65,7 +65,9 @@ $('div.response div.confirm a').click( function() {
     var cClass = $(this).attr('class');
     $('div.response .selected').removeClass('selected');
     $(this).addClass('selected');
-    $('div.response input#response').attr('value', cClass);
+    $('div.response input#response').attr('value', cClass.trim());
+    $.post('', $('form#food_form').serialize());
+
     return false;
 });
 
