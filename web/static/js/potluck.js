@@ -3,7 +3,7 @@ potluck = {
 }
 
 var getWS = function () {
-    var ws = new WebSocket("ws://potluck.local:8116/updates");
+    var ws = new WebSocket("ws://"+location.hostname+":8116/updates");
     ws.onopen = function() {
 	ws.send('id:'+session_id);
     };
