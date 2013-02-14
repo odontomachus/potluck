@@ -12,7 +12,6 @@ var getWS = function () {
 	for(var sectionClass in data)
 	{
 	    $('div.attendance div.'+ sectionClass+ ' ul').html(data[sectionClass]);
-	    console.log(data[sectionClass]);
 	};
     };
     return ws;
