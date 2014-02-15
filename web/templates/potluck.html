@@ -1,0 +1,100 @@
+<html ng-app>
+  <head>
+    <title>Potluck</title>
+    <link type="text/css" rel="stylesheet" href="/static/css/potluck.css">
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="cicero">
+	<img src="/static/images/crepe.jpg"/>
+      </div>
+      <div id="scroll">
+	Scroll down
+      </div>
+      <div id="potluck">
+	<h1>Potluck!</h1>
+	<div class="column half">
+	  <div class="pane">
+	    <p>
+	      Since it is a good time to feast (when is it not, really?) I will be hosting a potluck on Friday.</p>
+	    <p>
+	      <b>Food theme</b>: Vegetarian.
+	      <br />
+	      <b>When</b>: Friday the 22nd of February, 6:00pm
+	      <br />
+	      <div class="location">
+		<b>Where</b>: <a class="location" href="#"></a>
+		<div class="contact">
+		  Phone: 514-123-4567
+		  <div><img src="http://maps.googleapis.com/maps/api/staticmap?center=1260%20Remembrance,%20Montreal,%20Qc&zoom=15&markers=1260%20Remembrance,%20Qc&size=350x350&sensor=false"></div>
+		</div>
+	    </p>
+
+	    I hope to see you all there,
+	    <br />
+	    Jonathan
+	    </div>
+	  </div>
+	</div>
+	<div class="column half">
+	  <div class="pane">
+	    <div class="response">
+	      <div class="confirm">
+		<div class="yes"><a href="#" class="yes {user.classes[yes]}">I am &nbsp;</a></div>
+		<div class="maybe"><a href="#" class="maybe {user.classes[maybe]}">maybe &nbsp;</a></div>
+		<div class="no"><a href="#" class="no {user.classes[no]}">not &nbsp;</a></div>
+		coming.
+	      </div>
+	      <div class="food {user.show_food}">
+		<form id="food_form" method="POST">
+		  <input type="hidden" name="response" id="response" value="{user.response}" />
+		  <label for="food">I will bring &nbsp;</label><textarea rows="2" columns="20" name="food" id="food">{user.food}</textarea>.&nbsp;
+		  <button type="submit" value="submit" name="submit"><img alt="submit" src="/static/images/checkmark.png" /></button>
+		</form>
+	      </div>
+	    </div>
+	    <div class="responses">
+	      <div class="tabs">
+		<ul>
+		  <li class="yes selected">yes</li>
+		  <li class="no">no </li>
+		  <li class="maybe">maybe</li>
+		  <li class="invited">invited</li>
+		</ul>
+	      </div><!-- end tabs -->
+	      <div class="attendance">
+		<div class="yes selected">
+		  <ul>
+		    {users[yes]}
+		  </ul>
+		</div>
+		<div class="no">
+		  <ul>
+		    {users[no]}
+		  </ul>
+		</div>
+		<div class="maybe">
+		  <ul>
+		    {users[maybe]}
+		  </ul>
+		</div>
+		<div class="invited">
+		  <ul>
+		    {users[invited]}
+		  </ul>
+		</div>
+	      </div>
+	    </div><!-- responses -->
+	  </div>
+    </div>
+  </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+<script src="/static/js/plugins/jquery-ui-1.10.0.custom/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script type="text/javascript">
+  session_id="{session}"
+</script>
+<script src="/static/js/potluck.js"></script>
+</body>
+</html>
